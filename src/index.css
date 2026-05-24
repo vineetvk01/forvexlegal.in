@@ -1,0 +1,37 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Inter, system-ui, sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  color: #111827;
+}
+
+#root {
+  padding: 2rem;
+}
+
+.app-shell {
+  max-width: 54rem;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 1.25rem;
+  padding: 3rem;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.08);
+}
+
+.hero h1 {
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  line-height: 1.05;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #334155;
+}
