@@ -56,10 +56,27 @@ body {
   font-size: 1.125rem;
 }
 
+nav button,
 nav a {
   margin-left: 1rem;
   color: #0f172a;
   text-decoration: none;
+  background: transparent;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+}
+
+nav button:hover,
+nav a:hover,
+.foot-links button:hover {
+  background: rgba(15, 23, 42, 0.06);
+}
+
+nav button.active {
+  background: rgba(15, 23, 42, 0.1);
 }
 
 .cta {
@@ -96,11 +113,40 @@ nav a {
 .cards { display:flex; gap:1rem; flex-wrap:wrap }
 .card { background:#fff; padding:1.25rem; border-radius:8px; flex:1; min-width:200px; box-shadow:0 6px 18px rgba(15,23,42,0.04) }
 
-.about, .contact { padding:2rem 0 }
+.about, .contact,
+.page-section { padding:2rem 0 }
+
+.page-section h2 {
+  margin-bottom: 1rem;
+}
+
+.page-section p,
+.page-section li {
+  color: #334155;
+  line-height: 1.8;
+}
+
+.page-section ul {
+  margin: 1rem 0 1.5rem;
+  padding-left: 1.25rem;
+}
+
+.page-section li {
+  margin-bottom: 0.75rem;
+}
 
 .site-footer { margin-top:auto; padding:1rem 0; background:transparent }
-.site-footer .container { display:flex; align-items:center; justify-content:space-between }
-.foot-links a { margin-left:1rem; color:#475569; text-decoration:none }
+.site-footer .container { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.75rem }
+.foot-links button,
+.foot-links a {
+  margin-left:1rem;
+  color:#475569;
+  text-decoration:none;
+  border:none;
+  background:transparent;
+  cursor:pointer;
+  font: inherit;
+}
 
 @media (max-width:700px) {
   .cards { flex-direction:column }
