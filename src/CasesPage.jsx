@@ -196,8 +196,8 @@ export default function CasesPage() {
                     </p>
                   </div>
                   <div style={{ marginTop: 'auto', marginLeft: '-1.25rem', marginRight: '-1.25rem', width: 'calc(100% + 2.5rem)', display: 'flex', flexDirection: 'column' }}>
-                    <p style={{ margin: 0, padding: '0 1.25rem', fontWeight: 700, color: '#111827', fontSize: '0.8rem' }}>
-                      {item.docsource || 'Court source unavailable'}
+                    <p style={{ margin: 0, padding: '0 1.25rem', fontWeight: 700, color: '#111827', fontSize: '0.8rem', marginTop: '0.75rem' }}>
+                      <span style={{ fontWeight: 500 }}>{(item.author ? item.author + ', ' : '')}</span> {item.docsource || 'Court source unavailable'}
                     </p>
                     <button
                       type="button"
