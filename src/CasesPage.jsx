@@ -340,7 +340,7 @@ RULES:
                     background: isSupremeCourt ? '#fff8e1' : '#fff'
                   }}
                 >
-                  <div>
+                  <div className="card-content">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.75rem' }}>
                       <h4 style={{ margin: 0 }}>{item.title}</h4>
                       <button
@@ -358,12 +358,13 @@ RULES:
                       {item.headline ? item.headline.replace(/<[^>]+>/g, '').trim() : 'No summary available.'}
                     </p>
                   </div>
-                  <div style={{ marginTop: 'auto', marginLeft: '-1.25rem', marginRight: '-1.25rem', width: 'calc(100% + 2.5rem)', display: 'flex', flexDirection: 'column' }}>
+                  <div className="card-meta" style={{ marginTop: 'auto', marginLeft: '-1.25rem', marginRight: '-1.25rem', width: 'calc(100% + 2.5rem)', display: 'flex', flexDirection: 'column' }}>
                     <p style={{ margin: 0, padding: '0 1.25rem', fontWeight: 700, color: '#111827', fontSize: '0.8rem', marginTop: '0.75rem' }}>
                       <span style={{ fontWeight: 500 }}>{(item.author ? item.author + ', ' : '')}</span> {item.docsource || 'Court source unavailable'}
                     </p>
                     <button
                       type="button"
+                      className="select-case-btn"
                       onClick={() => toggleSelection(item)}
                       style={{
                         width: '100%',

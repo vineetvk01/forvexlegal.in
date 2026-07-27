@@ -123,18 +123,48 @@ nav button.active {
 .services { padding: 2rem 0; }
 .services h2 { margin-bottom: 1rem }
 .cards {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1rem;
-  flex-wrap: wrap;
 }
 
 .card {
   background: #fff;
   padding: 1.25rem;
-  border-radius: 8px;
-  flex: 0 0 calc(25% - 0.75rem);
-  min-width: 220px;
+  border-radius: 12px;
+  min-width: 0;
+  width: 100%;
   box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+  overflow: hidden;
+}
+
+.card-content {
+  min-width: 0;
+}
+
+.card h4,
+.card p,
+.card .card-meta {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.card h4 {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.card .card-meta {
+  min-width: 0;
+}
+
+.select-case-btn {
+  white-space: normal;
 }
 
 .delete-case-btn {
@@ -192,6 +222,37 @@ nav button.active {
 }
 
 @media (max-width:700px) {
-  .cards { flex-direction:column }
+  .container {
+    padding: 1rem;
+  }
+
+  .page-section {
+    padding: 1.25rem 0;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .card .card-meta {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    width: calc(100% + 2rem);
+  }
+
+  .card .card-meta p {
+    padding: 0 1rem;
+  }
+
+  .select-case-btn {
+    padding: 0.8rem 0.75rem;
+    font-size: 0.95rem;
+  }
+
   nav a { margin-left:0.6rem }
 }
