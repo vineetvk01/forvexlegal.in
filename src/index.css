@@ -51,6 +51,18 @@ body {
   justify-content: space-between;
 }
 
+.nav-controls { display:flex; align-items:center; gap:0.5rem }
+.menu-toggle { display:none; background:transparent; border:none; font-size:1.25rem; cursor:pointer; padding:0.25rem }
+.nav-links { display:flex; align-items:center; gap:0.5rem }
+
+@media (max-width:700px) {
+  .menu-toggle { display:inline-flex }
+  .nav-links { display:none; position:absolute; top:64px; right:1rem; left:1rem; background:#fff; border-radius:8px; padding:0.5rem; box-shadow:0 8px 24px rgba(15,23,42,0.08); flex-direction:column }
+  .nav-links.open { display:flex }
+  .nav-links button { width:100%; text-align:left; padding:0.5rem 0.75rem; border-radius:6px }
+  .nav-links button.active { background: rgba(15,23,42,0.04) }
+}
+
 .brand {
   font-weight: 700;
   font-size: 1.125rem;
@@ -123,6 +135,25 @@ nav button.active {
   flex: 0 0 calc(25% - 0.75rem);
   min-width: 220px;
   box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+}
+
+.delete-case-btn {
+  border: none;
+  background: transparent;
+  color: #b91c1c;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+}
+
+.delete-case-btn:hover {
+  opacity: 0.8;
+}
+
+.delete-case-btn:disabled {
+  cursor: wait;
+  opacity: 0.6;
 }
 
 .about, .contact,

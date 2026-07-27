@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BrowserRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import HomePage from './HomePage';
 import CasesPage from './CasesPage';
@@ -42,23 +43,34 @@ function TermsConditions() {
 function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <div className="app-shell">
       <header className="site-header">
         <div className="container nav">
           <div className="brand">Forvex Legal</div>
-          <nav>
-            <button type="button" className={location.pathname === '/' ? 'active' : ''} onClick={() => navigate('/')}>
-              Home
+          <div className="nav-controls">
+            <button
+              className="menu-toggle"
+              type="button"
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+              onClick={() => setMobileOpen(!mobileOpen)}
+            >
+              {mobileOpen ? '✕' : '☰'}
             </button>
-            <button type="button" className={location.pathname === '/privacy' ? 'active' : ''} onClick={() => navigate('/privacy')}>
-              Privacy Policy
-            </button>
-            <button type="button" className={location.pathname === '/terms' ? 'active' : ''} onClick={() => navigate('/terms')}>
-              Terms & Conditions
-            </button>
-          </nav>
+            <nav className={`nav-links ${mobileOpen ? 'open' : ''}`}>
+              <button type="button" className={location.pathname === '/' ? 'active' : ''} onClick={() => { navigate('/'); setMobileOpen(false); }}>
+                Home
+              </button>
+              <button type="button" className={location.pathname === '/privacy' ? 'active' : ''} onClick={() => { navigate('/privacy'); setMobileOpen(false); }}>
+                Privacy Policy
+              </button>
+              <button type="button" className={location.pathname === '/terms' ? 'active' : ''} onClick={() => { navigate('/terms'); setMobileOpen(false); }}>
+                Terms & Conditions
+              </button>
+            </nav>
+          </div>
         </div>
       </header>
 

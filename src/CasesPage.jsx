@@ -24,6 +24,8 @@ export default function CasesPage() {
   const [summaryResponse, setSummaryResponse] = useState('');
   const [summaryError, setSummaryError] = useState('');
   const [generating, setGenerating] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
+  const [deletingTid, setDeletingTid] = useState(null);
   const [promptText, setPromptText] = useState(`You are a legal research assistant specializing in Indian taxation law.
 
 Your task is to analyse the Delhi,Bombay High court & Supreme court judgements shared above
@@ -162,6 +164,37 @@ RULES:
     }
   }
 
+  async function handleDeleteCase(item) {
+    const confirmed = window.confirm(`Delete "${item.title || 'this case'}"?`);
+    if (!confirmed) {
+      return;
+    }
+
+    setDeleteError('');
+    setDeletingTid(item.tid);
+
+    try {
+      const response = await fetch(`${baseUrl}/api/cases/${encodeURIComponent(item.tid)}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      setCases((prev) => prev.filter((caseItem) => caseItem.tid !== item.tid));
+      setSelectedIds((prev) => {
+        const next = new Set(prev);
+        next.delete(item.tid);
+        return next;
+      });
+    } catch (err) {
+      setDeleteError(err.message || 'Unable to delete case.');
+    } finally {
+      setDeletingTid(null);
+    }
+  }
+
   useEffect(() => {
     let isMounted = true;
 
@@ -216,6 +249,7 @@ RULES:
 
       {loading && <p>Loading cases…</p>}
       {error && <p style={{ color: '#b91c1c' }}>{error}</p>}
+      {deleteError && <p style={{ color: '#b91c1c', marginBottom: '0.75rem' }}>{deleteError}</p>}
 
       {!loading && !error && groupedCases.length === 0 && <p>No cases available right now.</p>}
 
@@ -306,7 +340,18 @@ RULES:
                   }}
                 >
                   <div>
-                    <h4>{item.title}</h4>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.75rem' }}>
+                      <h4 style={{ margin: 0 }}>{item.title}</h4>
+                      <button
+                        type="button"
+                        className="delete-case-btn"
+                        aria-label={`Delete ${item.title}`}
+                        onClick={() => handleDeleteCase(item)}
+                        disabled={deletingTid === item.tid}
+                      >
+                        {deletingTid === item.tid ? '…' : '🗑️'}
+                      </button>
+                    </div>
                     <p style={{ fontSize: '0.9rem', lineHeight: 1.6, marginTop: '0.5rem' }}>
                       {item.headline ? item.headline.replace(/<[^>]+>/g, '').trim() : 'No summary available.'}
                     </p>
