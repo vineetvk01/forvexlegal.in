@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { FaTrash } from 'react-icons/fa';
 
 function formatDateLabel(dateString) {
   const date = new Date(`${dateString}T00:00:00`);
@@ -348,8 +349,9 @@ RULES:
                         aria-label={`Delete ${item.title}`}
                         onClick={() => handleDeleteCase(item)}
                         disabled={deletingTid === item.tid}
+                        title="Delete case"
                       >
-                        {deletingTid === item.tid ? '…' : '🗑️'}
+                        {deletingTid === item.tid ? '…' : <FaTrash />}
                       </button>
                     </div>
                     <p style={{ fontSize: '0.9rem', lineHeight: 1.6, marginTop: '0.5rem' }}>
