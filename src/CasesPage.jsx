@@ -26,7 +26,8 @@ export default function CasesPage() {
 
     async function fetchCases() {
       try {
-        const response = await fetch('http://localhost:3005/api/cases');
+        const baseUrl = process.env.REACT_APP_SERVER_URL || '';
+        const response = await fetch(`${baseUrl}/api/cases`);
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
         }
