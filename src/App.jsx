@@ -1,55 +1,6 @@
-import { useEffect, useState } from 'react';
-
-const pages = {
-  home: 'Home',
-  privacy: 'Privacy Policy',
-  terms: 'Terms & Conditions',
-};
-
-function HomePage() {
-  return (
-    <>
-      <section className="hero">
-        <div className="container">
-          <h1>Trusted legal counsel for modern businesses</h1>
-          <p className="lead">Commercial contracts, compliance, and corporate governance — pragmatic advice tailored to startups and enterprises.</p>
-          <p>
-            <a className="btn primary" href="mailto:hello@forvexlegal.com">Get a consultation</a>
-            <a className="btn ghost" href="#services">Our services</a>
-          </p>
-        </div>
-      </section>
-
-      <section id="services" className="services container">
-        <h2>Our Services</h2>
-        <div className="cards">
-          <article className="card">
-            <h3>Commercial Contracts</h3>
-            <p>Drafting and negotiating vendor, SaaS, and partnership agreements.</p>
-          </article>
-          <article className="card">
-            <h3>Compliance & Privacy</h3>
-            <p>GDPR, data processing agreements, and privacy policies.</p>
-          </article>
-          <article className="card">
-            <h3>Corporate Advisory</h3>
-            <p>Entity formation, shareholder agreements, and governance.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="about" className="about container">
-        <h2>About Forvex Legal</h2>
-        <p>We combine commercial sense with clear legal drafting to help you move faster and reduce risk.</p>
-      </section>
-
-      <section id="contact" className="contact container">
-        <h2>Contact</h2>
-        <p>Email us at <a href="mailto:hello@forvexlegal.com">hello@forvexlegal.com</a> or call <strong>+91 (901) 326-5820</strong>.</p>
-      </section>
-    </>
-  );
-}
+import { BrowserRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import HomePage from './HomePage';
+import CasesPage from './CasesPage';
 
 function PrivacyPolicy() {
   return (
@@ -88,19 +39,9 @@ function TermsConditions() {
   );
 }
 
-export default function App() {
-  const [page, setPage] = useState('home');
-
-  useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    if (hash && Object.keys(pages).includes(hash)) {
-      setPage(hash);
-    }
-  }, []);
-
-  useEffect(() => {
-    window.location.hash = page === 'home' ? '' : page;
-  }, [page]);
+function AppContent() {
+  const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <div className="app-shell">
@@ -108,32 +49,47 @@ export default function App() {
         <div className="container nav">
           <div className="brand">Forvex Legal</div>
           <nav>
-            <button type="button" className={page === 'home' ? 'active' : ''} onClick={() => setPage('home')}>
+            <button type="button" className={location.pathname === '/' ? 'active' : ''} onClick={() => navigate('/')}>
               Home
             </button>
-            <button type="button" className={page === 'privacy' ? 'active' : ''} onClick={() => setPage('privacy')}>
+            <button type="button" className={location.pathname === '/privacy' ? 'active' : ''} onClick={() => navigate('/privacy')}>
               Privacy Policy
             </button>
-            <button type="button" className={page === 'terms' ? 'active' : ''} onClick={() => setPage('terms')}>
+            <button type="button" className={location.pathname === '/terms' ? 'active' : ''} onClick={() => navigate('/terms')}>
               Terms & Conditions
             </button>
           </nav>
         </div>
       </header>
 
-      {page === 'home' && <HomePage />}
-      {page === 'privacy' && <PrivacyPolicy />}
-      {page === 'terms' && <TermsConditions />}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/cases" element={<CasesPage />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsConditions />} />
+      </Routes>
 
       <footer className="site-footer">
         <div className="container">
           <small>© {new Date().getFullYear()} Forvex Legal — All rights reserved.</small>
           <div className="foot-links">
-            <button type="button" onClick={() => setPage('privacy')}>Privacy</button>
-            <button type="button" onClick={() => setPage('terms')}>Terms</button>
+            <button type="button" onClick={() => navigate('/privacy')}>
+              Privacy
+            </button>
+            <button type="button" onClick={() => navigate('/terms')}>
+              Terms
+            </button>
           </div>
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
   );
 }

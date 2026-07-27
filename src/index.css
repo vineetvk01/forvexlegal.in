@@ -110,8 +110,20 @@ nav button.active {
 
 .services { padding: 2rem 0; }
 .services h2 { margin-bottom: 1rem }
-.cards { display:flex; gap:1rem; flex-wrap:wrap }
-.card { background:#fff; padding:1.25rem; border-radius:8px; flex:1; min-width:200px; box-shadow:0 6px 18px rgba(15,23,42,0.04) }
+.cards {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: #fff;
+  padding: 1.25rem;
+  border-radius: 8px;
+  flex: 0 0 calc(25% - 0.75rem);
+  min-width: 220px;
+  box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+}
 
 .about, .contact,
 .page-section { padding:2rem 0 }
