@@ -30,9 +30,6 @@ export default function CasesPage() {
   const [promptText, setPromptText] = useState(`You are a legal research assistant specializing in Indian taxation law.
 
 Your task is to analyse the Delhi,Bombay High court & Supreme court judgements shared above
-and find all judgments related to Income Tax and GST delivered, selected and shared above 
-
-PRIORITIZE: GST JUDGEMENT OVER INCOME TAX
 
 For each judgment shared above, provide the following details in a concise and clear manner, formatted for WhatsApp:
 1. Case Title (Petitioner vs Respondent) - Court Name
@@ -103,9 +100,7 @@ FORMAT YOUR RESPONSE EXACTLY LIKE THIS (WhatsApp friendly):
 and soo on for all selected judgments. For each judgment, provide the above details in the same format.
 
 RULES:
-- PRIORITIZE: GST JUDGEMENTS OVER INCOME TAX
-- Only include Income Tax and GST related judgments even any other TAX related judgement, do share. Skip all others.
-- If no judgments found in past few days, respond with: "No Income Tax / GST judgments found in the past 3 days." add reason if provided in one line
+- Focus on the areas related to Income Tax and GST. 
 - Keep good spaces — this will be read on WhatsApp.
 - Use bold and italics as shown — WhatsApp renders * for bold and _ for italics.
 - Always include the direct PDF link. If PDF is not directly accessible, include the case detail page link.
@@ -269,14 +264,14 @@ RULES:
           <button
             type="button"
             onClick={handleGenerateSelectedSummary}
-            disabled={selectedIds.size < 2 || generating}
+            disabled={selectedIds.size < 1 || generating}
             style={{
               padding: '0.75rem 1rem',
               borderRadius: 999,
-              background: selectedIds.size < 2|| generating ? '#e2e8f0' : '#0f172a',
-              color: selectedIds.size < 2 || generating ? '#94a3b8' : '#fff',
+              background: selectedIds.size < 1|| generating ? '#e2e8f0' : '#0f172a',
+              color: selectedIds.size < 1 || generating ? '#94a3b8' : '#fff',
               border: 'none',
-              cursor: selectedIds.size < 2 || generating ? 'not-allowed' : 'pointer',
+              cursor: selectedIds.size < 1 || generating ? 'not-allowed' : 'pointer',
               fontWeight: 700,
             }}
           >
