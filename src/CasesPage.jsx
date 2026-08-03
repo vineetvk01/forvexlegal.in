@@ -27,6 +27,10 @@ export default function CasesPage() {
   const [generating, setGenerating] = useState(false);
   const [deleteError, setDeleteError] = useState('');
   const [deletingTid, setDeletingTid] = useState(null);
+  const [beforeText, setBeforeText] = useState('');
+  const [afterText, setAfterText] = useState(`www.forvexlegal.in
+
+(Founded by Adv. (CA) Shikhar Garg).`);
   const [promptText, setPromptText] = useState(`You are a legal research assistant specializing in Indian taxation law.
 
 Your task is to analyse the Delhi,Bombay High court & Supreme court judgements shared above
@@ -39,13 +43,9 @@ For each judgment shared above, provide the following details in a concise and c
 5. Key Section / Provision involved (e.g. Section 148 Income Tax Act, Section 74 CGST Act)
 6. Direct PDF link to open the judgment
 
----
-
 FORMAT YOUR RESPONSE EXACTLY LIKE THIS (WhatsApp friendly):
 
-📅 *DAILY TAX DIGEST — [Todays Indian time DATE]* Income Tax & GST Judgments_
-
----
+📅 *Forvex legal | Tax & Allied Laws Updates — [Todays Indian time DATE]*
 
 🔹 *1. [Case Title]* [Court Name]
 <blank line>
@@ -70,8 +70,6 @@ FORMAT YOUR RESPONSE EXACTLY LIKE THIS (WhatsApp friendly):
 ]
 🔗 [Tap to open judgment PDF](PDF LINK)
 
----
-
 🔹 *2. [Case Title]* [Court Name]
 <blank>
 📁 Case No: [Case Number]
@@ -95,16 +93,14 @@ FORMAT YOUR RESPONSE EXACTLY LIKE THIS (WhatsApp friendly):
 ]
 🔗 [Tap to open judgment PDF](PDF LINK)
 
----
-
 and soo on for all selected judgments. For each judgment, provide the above details in the same format.
 
 RULES:
-- Focus on the areas related to Income Tax and GST. 
+- Focus on the areas related to Income Tax and GST. No need to add a NOTE or PS at the end.
 - Keep good spaces — this will be read on WhatsApp.
 - Use bold and italics as shown — WhatsApp renders * for bold and _ for italics.
 - Always include the direct PDF link. If PDF is not directly accessible, include the case detail page link.
-- Do not add any extra commentary outside the format above.`);
+- Do not add any extra commentary outside the format above. like NOTE. at the end, not needed`);
   const baseUrl = process.env.REACT_APP_SERVER_URL || '';
 
   function toggleSelection(item) {
@@ -136,7 +132,12 @@ RULES:
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ tids: Array.from(selectedIds), prompt: promptText }),
+        body: JSON.stringify({
+          tids: Array.from(selectedIds),
+          prompt: promptText,
+          beforeText,
+          afterText,
+        }),
       });
 
       if (!response.ok) {
@@ -254,10 +255,29 @@ RULES:
           <p style={{ margin: 0, marginBottom: '0.75rem', color: '#334155' }}>
             Selected cases: {selectedIds.size}
           </p>
+          <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Text before generated message</label>
+          <textarea
+            value={beforeText}
+            onChange={(e) => setBeforeText(e.target.value)}
+            placeholder="Enter text to appear before the generated message"
+            rows={3}
+            style={{ width: '100%', padding: '0.5rem', borderRadius: 8, border: '1px solid rgba(15,23,42,0.08)', marginBottom: '0.75rem', resize: 'vertical' }}
+          />
+
+          <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Prompt / instructions</label>
           <textarea
             value={promptText}
             onChange={(e) => setPromptText(e.target.value)}
             placeholder="Optional: enter a custom prompt to guide the summary generation"
+            rows={8}
+            style={{ width: '100%', padding: '0.5rem', borderRadius: 8, border: '1px solid rgba(15,23,42,0.08)', marginBottom: '0.75rem', resize: 'vertical' }}
+          />
+
+          <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Text after generated message</label>
+          <textarea
+            value={afterText}
+            onChange={(e) => setAfterText(e.target.value)}
+            placeholder="Enter text to appear after the generated message"
             rows={3}
             style={{ width: '100%', padding: '0.5rem', borderRadius: 8, border: '1px solid rgba(15,23,42,0.08)', marginBottom: '0.75rem', resize: 'vertical' }}
           />
