@@ -27,6 +27,8 @@ export default function CasesPage() {
   const [generating, setGenerating] = useState(false);
   const [deleteError, setDeleteError] = useState('');
   const [deletingTid, setDeletingTid] = useState(null);
+  const [pdfFiles, setPdfFiles] = useState([]);
+  const [uploadError, setUploadError] = useState('');
   const [beforeText, setBeforeText] = useState('');
   const [afterText, setAfterText] = useState(`www.forvexlegal.in
 
@@ -116,9 +118,34 @@ RULES:
     });
   }
 
+  function handlePdfSelection(event) {
+    const files = Array.from(event.target.files || []);
+    const validFiles = files.filter((file) => file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf'));
+
+    if (validFiles.length !== files.length) {
+      setUploadError('Only PDF files are allowed.');
+      event.target.value = '';
+      return;
+    }
+
+    if (pdfFiles.length + validFiles.length > 5) {
+      setUploadError('You can upload up to 5 PDF files in total.');
+      event.target.value = '';
+      return;
+    }
+
+    setUploadError('');
+    setPdfFiles((prev) => [...prev, ...validFiles]);
+    event.target.value = '';
+  }
+
+  function removePdfFile(index) {
+    setPdfFiles((prev) => prev.filter((_, itemIndex) => itemIndex !== index));
+  }
+
   async function handleGenerateSelectedSummary() {
-    if (selectedIds.size === 0) {
-      setSummaryError('Please select at least one case to summarize.');
+    if (selectedIds.size === 0 && pdfFiles.length === 0) {
+      setSummaryError('Please select at least one case or upload at least one PDF to summarize.');
       return;
     }
 
@@ -127,17 +154,20 @@ RULES:
     setGenerating(true);
 
     try {
+      const formData = new FormData();
+      formData.append('tids', JSON.stringify(Array.from(selectedIds)));
+      formData.append('prompt', promptText);
+      formData.append('beforeText', beforeText);
+      formData.append('afterText', afterText);
+
+      pdfFiles.forEach((file) => {
+        formData.append('files', file);
+        formData.append('pdfs', file);
+      });
+
       const response = await fetch(`${baseUrl}/api/cases/summarize`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          tids: Array.from(selectedIds),
-          prompt: promptText,
-          beforeText,
-          afterText,
-        }),
+        body: formData,
       });
 
       if (!response.ok) {
@@ -251,7 +281,7 @@ RULES:
       {!loading && !error && groupedCases.length === 0 && <p>No cases available right now.</p>}
 
       {!loading && !error && (
-        <div style={{ margin: '1.5rem 0', padding: '1rem', borderRadius: 12, background: '#f8fafc', border: '1px solid rgba(15,23,42,0.08)' }}>
+        <div style={{ margin: '1.5rem 0', padding: '1.25rem', borderRadius: 16, background: 'linear-gradient(135deg, #f8fafc 0%, #ffffff 100%)', border: '1px solid rgba(15,23,42,0.08)', boxShadow: '0 12px 30px rgba(15,23,42,0.06)' }}>
           <p style={{ margin: 0, marginBottom: '0.75rem', color: '#334155' }}>
             Selected cases: {selectedIds.size}
           </p>
@@ -261,7 +291,7 @@ RULES:
             onChange={(e) => setBeforeText(e.target.value)}
             placeholder="Enter text to appear before the generated message"
             rows={3}
-            style={{ width: '100%', padding: '0.5rem', borderRadius: 8, border: '1px solid rgba(15,23,42,0.08)', marginBottom: '0.75rem', resize: 'vertical' }}
+            style={{ width: '100%', padding: '0.7rem 0.8rem', borderRadius: 10, border: '1px solid #cbd5e1', background: '#fff', marginBottom: '0.75rem', resize: 'vertical', fontSize: '0.95rem', boxShadow: 'inset 0 1px 2px rgba(15,23,42,0.03)' }}
           />
 
           <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Prompt / instructions</label>
@@ -270,7 +300,7 @@ RULES:
             onChange={(e) => setPromptText(e.target.value)}
             placeholder="Optional: enter a custom prompt to guide the summary generation"
             rows={8}
-            style={{ width: '100%', padding: '0.5rem', borderRadius: 8, border: '1px solid rgba(15,23,42,0.08)', marginBottom: '0.75rem', resize: 'vertical' }}
+            style={{ width: '100%', padding: '0.7rem 0.8rem', borderRadius: 10, border: '1px solid #cbd5e1', background: '#fff', marginBottom: '0.75rem', resize: 'vertical', fontSize: '0.95rem', boxShadow: 'inset 0 1px 2px rgba(15,23,42,0.03)' }}
           />
 
           <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Text after generated message</label>
@@ -279,20 +309,50 @@ RULES:
             onChange={(e) => setAfterText(e.target.value)}
             placeholder="Enter text to appear after the generated message"
             rows={3}
-            style={{ width: '100%', padding: '0.5rem', borderRadius: 8, border: '1px solid rgba(15,23,42,0.08)', marginBottom: '0.75rem', resize: 'vertical' }}
+            style={{ width: '100%', padding: '0.7rem 0.8rem', borderRadius: 10, border: '1px solid #cbd5e1', background: '#fff', marginBottom: '0.75rem', resize: 'vertical', fontSize: '0.95rem', boxShadow: 'inset 0 1px 2px rgba(15,23,42,0.03)' }}
           />
+
+          <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Upload PDFs (max 5)</label>
+          <div style={{ border: '1px dashed #94a3b8', borderRadius: 12, padding: '0.8rem 0.9rem', background: '#fff', marginBottom: '0.75rem' }}>
+            <input
+              type="file"
+              accept="application/pdf"
+              multiple
+              onChange={handlePdfSelection}
+              style={{ width: '100%' }}
+            />
+          </div>
+          {uploadError && <p style={{ color: '#b91c1c', marginBottom: '0.75rem' }}>{uploadError}</p>}
+          {pdfFiles.length > 0 && (
+            <ul style={{ paddingLeft: '1.25rem', marginBottom: '0.75rem', color: '#334155' }}>
+              {pdfFiles.map((file, index) => (
+                <li key={`${file.name}-${index}`} style={{ marginBottom: '0.35rem' }}>
+                  <span>{file.name}</span>
+                  <button
+                    type="button"
+                    onClick={() => removePdfFile(index)}
+                    style={{ marginLeft: '0.5rem', border: 'none', background: 'transparent', color: '#b91c1c', cursor: 'pointer' }}
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+
           <button
             type="button"
             onClick={handleGenerateSelectedSummary}
-            disabled={selectedIds.size < 1 || generating}
+            disabled={(selectedIds.size < 1 && pdfFiles.length < 1) || generating}
             style={{
-              padding: '0.75rem 1rem',
+              padding: '0.8rem 1rem',
               borderRadius: 999,
-              background: selectedIds.size < 1|| generating ? '#e2e8f0' : '#0f172a',
-              color: selectedIds.size < 1 || generating ? '#94a3b8' : '#fff',
+              background: (selectedIds.size < 1 && pdfFiles.length < 1) || generating ? '#e2e8f0' : '#0f172a',
+              color: (selectedIds.size < 1 && pdfFiles.length < 1) || generating ? '#94a3b8' : '#fff',
               border: 'none',
-              cursor: selectedIds.size < 1 || generating ? 'not-allowed' : 'pointer',
+              cursor: (selectedIds.size < 1 && pdfFiles.length < 1) || generating ? 'not-allowed' : 'pointer',
               fontWeight: 700,
+              boxShadow: (selectedIds.size < 1 && pdfFiles.length < 1) || generating ? 'none' : '0 8px 20px rgba(15,23,42,0.12)',
             }}
           >
             {generating ? 'Generating summary…' : 'Generate summary for selected cases'}
