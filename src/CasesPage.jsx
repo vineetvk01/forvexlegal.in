@@ -42,12 +42,13 @@ Founded by Adv. (CA) Shikhar Garg`);
 Your task is to analyse the Delhi,Bombay High court & Supreme court judgements shared above
 
 For each judgment shared above, provide the following details in a concise and clear manner, formatted for WhatsApp:
-1. Case Title (Petitioner vs Respondent) - Court Name
-2. Case Number
-3. Date of Judgment
-4. Brief Summary (2-3 lines max — what the case was about and the outcome)
-5. Key Section / Provision involved (e.g. Section 148 Income Tax Act, Section 74 CGST Act)
-6. Direct PDF link to open the judgment
+1. Court Name
+2. Case Title (Petitioner vs Respondent)
+3. Case Number
+4. Date of Judgment
+5. Brief Summary (2-3 lines max — what the case was about and the outcome)
+6. Key Section / Provision involved (e.g. Section 148 Income Tax Act, Section 74 CGST Act)
+7. Direct PDF link to open the judgment
 
 FORMAT YOUR RESPONSE EXACTLY LIKE THIS (WhatsApp friendly):
 
