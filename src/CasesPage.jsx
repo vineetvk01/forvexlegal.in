@@ -375,7 +375,7 @@ RULES:
                   onClick={() => {
                     try {
                       const text = summaryResponse || '';
-                      const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+                      const url = `https://api.whatsapp.com/send/?text=${encodeURIComponent(text)}`;
                       window.open(url, '_blank');
                     } catch (e) {
                       // ignore
@@ -393,7 +393,7 @@ RULES:
                 >
                   Send via WhatsApp
                 </button>
-                <a href={`https://wa.me/?text=${encodeURIComponent(summaryResponse || '')}`} target="_blank" rel="noreferrer" style={{ color: '#0f172a', textDecoration: 'underline', fontSize: '0.9rem' }}>Open WhatsApp</a>
+                <a href={`https://api.whatsapp.com/send/?text=${encodeURIComponent(summaryResponse || '')}`} target="_blank" rel="noreferrer" style={{ color: '#0f172a', textDecoration: 'underline', fontSize: '0.9rem' }}>Open WhatsApp</a>
               </div>
             </div>
           )}
