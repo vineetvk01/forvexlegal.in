@@ -152,6 +152,24 @@ RULES:
     setPdfFiles((prev) => prev.filter((_, itemIndex) => itemIndex !== index));
   }
 
+  function openWhatsAppShare(text) {
+    const shareText = text || '';
+    const encodedText = encodeURIComponent(shareText);
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+    const whatsappAppUrl = `whatsapp://send?text=${encodedText}`;
+    const whatsappWebUrl = `https://wa.me/?text=${encodedText}`;
+
+    if (isMobile) {
+      window.location.href = whatsappAppUrl;
+      setTimeout(() => {
+        window.open(whatsappWebUrl, '_blank', 'noopener,noreferrer');
+      }, 800);
+      return;
+    }
+
+    window.open(whatsappWebUrl, '_blank', 'noopener,noreferrer');
+  }
+
   async function handleGenerateSelectedSummary() {
     if (selectedIds.size === 0 && pdfFiles.length === 0) {
       setSummaryError('Please select at least one case or upload at least one PDF to summarize.');
@@ -376,9 +394,7 @@ RULES:
                   type="button"
                   onClick={() => {
                     try {
-                      const text = summaryResponse || '';
-                      const url = `https://api.whatsapp.com/send/?text=${encodeURIComponent(text)}`;
-                      window.open(url, '_blank');
+                      openWhatsAppShare(summaryResponse || '');
                     } catch (e) {
                       // ignore
                     }
@@ -395,7 +411,14 @@ RULES:
                 >
                   Send via WhatsApp
                 </button>
-                <a href={`https://api.whatsapp.com/send/?text=${encodeURIComponent(summaryResponse || '')}`} target="_blank" rel="noreferrer" style={{ color: '#0f172a', textDecoration: 'underline', fontSize: '0.9rem' }}>Open WhatsApp</a>
+                <a
+                  href={`https://wa.me/?text=${encodeURIComponent(summaryResponse || '')}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ color: '#0f172a', textDecoration: 'underline', fontSize: '0.9rem' }}
+                >
+                  Open WhatsApp
+                </a>
               </div>
             </div>
           )}
