@@ -24,6 +24,7 @@ export default function CasesPage() {
   const [selectedIds, setSelectedIds] = useState(new Set());
   const [summaryResponse, setSummaryResponse] = useState('');
   const [summaryError, setSummaryError] = useState('');
+  const [copiedSummary, setCopiedSummary] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [deleteError, setDeleteError] = useState('');
   const [deletingTid, setDeletingTid] = useState(null);
@@ -78,7 +79,7 @@ Case Title: [Case Title]
     * It should be written in 2–4 concise lines.
     * Wherever possible, add a very short practical analysis (1–2 lines) explaining when practitioners can rely on this judgment.
 ]
-🔗 *Tap to open judgment:* ( only indian kanoon document link or judgement link or else leave, DON'T include scconline link here)
+🔗 *Tap to open judgment:* ( if "indiankanoon link is present" share indian kanoon link else DON'T include scconline or any link here, share a proper link)
 
 🔹 *2. [Court Name]
 <blank line>
@@ -102,7 +103,7 @@ Case Title: [Case Title]
     * It should be written in 2–4 concise lines.
     * Wherever possible, add a very short practical analysis (1–2 lines) explaining when practitioners can rely on this judgment.
 ]
-🔗 *Tap to open judgment:* ( only indian kanoon document link or judgement link or else leave, DON'T include scconline link here)
+🔗 *Tap to open judgment:* ( if "indiankanoon link is present" share indian kanoon link else DON'T include scconline or any link here, share a proper link)
 
 and soo on for all selected judgments. For each judgment, provide the above details in the same format.
 
@@ -371,7 +372,7 @@ RULES:
             <div style={{ marginTop: '0.75rem', padding: '1rem', background: '#ffffff', borderRadius: 12, border: '1px solid rgba(15,23,42,0.08)' }}>
               <strong>Summary result</strong>
               <p style={{ marginTop: '0.5rem', whiteSpace: 'pre-wrap', color: '#334155' }}>{summaryResponse}</p>
-              <div style={{ marginTop: 12, display: 'flex', gap: 8, alignItems: 'center' }}>
+              <div style={{ marginTop: 12, display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
                 <button
                   type="button"
                   onClick={() => {
@@ -394,6 +395,31 @@ RULES:
                   }}
                 >
                   Send via WhatsApp
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const text = summaryResponse || '';
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                      navigator.clipboard.writeText(text).then(() => {
+                        setCopiedSummary(true);
+                        window.setTimeout(() => setCopiedSummary(false), 1500);
+                      }).catch(() => {
+                        setCopiedSummary(false);
+                      });
+                    }
+                  }}
+                  style={{
+                    padding: '0.5rem 0.75rem',
+                    borderRadius: 8,
+                    background: '#0f172a',
+                    color: '#fff',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontWeight: 700,
+                  }}
+                >
+                  {copiedSummary ? 'Copied!' : 'Copy text'}
                 </button>
                 <a href={`https://api.whatsapp.com/send/?text=${encodeURIComponent(summaryResponse || '')}`} target="_blank" rel="noreferrer" style={{ color: '#0f172a', textDecoration: 'underline', fontSize: '0.9rem' }}>Open WhatsApp</a>
               </div>
