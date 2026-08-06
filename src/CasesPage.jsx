@@ -40,7 +40,7 @@ Forvex Legal
 Founded by Adv. (CA) Shikhar Garg`);
   const [promptText, setPromptText] = useState(`You are a legal research assistant specializing in Indian taxation law.
 
-Your task is to analyse the Delhi,Bombay High court & Supreme court judgements shared above
+Your task is to analyse the judgements shared above, Prefer the uploaded files over the shared cases above in the prompt. Include all shared.
 
 For each judgment shared above, provide the following details in a concise and clear manner, formatted for WhatsApp:
 1. Court Name
