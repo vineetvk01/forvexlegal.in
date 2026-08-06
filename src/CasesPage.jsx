@@ -78,7 +78,7 @@ Case Title: [Case Title]
     * It should be written in 2–4 concise lines.
     * Wherever possible, add a very short practical analysis (1–2 lines) explaining when practitioners can rely on this judgment.
 ]
-🔗 [Tap to open judgment PDF](PDF LINK)
+🔗 *Tap to open judgment:* url / pdf url
 
 🔹 *2. [Court Name]
 <blank line>
@@ -102,7 +102,7 @@ Case Title: [Case Title]
     * It should be written in 2–4 concise lines.
     * Wherever possible, add a very short practical analysis (1–2 lines) explaining when practitioners can rely on this judgment.
 ]
-🔗 [Tap to open judgment PDF](PDF LINK)
+🔗 *Tap to open judgment:* url / pdf url
 
 and soo on for all selected judgments. For each judgment, provide the above details in the same format.
 
