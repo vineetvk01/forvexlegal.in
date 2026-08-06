@@ -40,7 +40,7 @@ Forvex Legal
 Founded by Adv. (CA) Shikhar Garg`);
   const [promptText, setPromptText] = useState(`You are a legal research assistant specializing in Indian taxation law.
 
-Your task is to analyse the judgements shared above, Prefer the uploaded files over the shared cases above in the prompt. Include all shared.
+Your task is to analyse the judgements shared above, Prefer the uploaded files over the shared cases above in the prompt example number 1,2 will be files. Include all shared.
 
 For each judgment shared above, provide the following details in a concise and clear manner, formatted for WhatsApp:
 1. Court Name
@@ -105,7 +105,7 @@ Case Title: [Case Title]
 ]
 🔗 *Tap to open judgment:* if "indiankanoon link is present" share indian kanoon link / pdf link. [ DON'T include any link if indiankanoon link is not present. NO NEED TO SHOW ANY LINK IN THAT CASE ]
 
-and soo on for all selected judgments. For each judgment, provide the above details in the same format.
+...and soo on for all selected judgments. For each judgment, provide the above details in the same format.
 
 RULES:
 - Focus on the areas related to Income Tax and GST. No need to add a NOTE or PS at the end.
