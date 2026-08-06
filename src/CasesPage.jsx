@@ -57,7 +57,9 @@ FORMAT YOUR RESPONSE EXACTLY LIKE THIS (WhatsApp friendly):
 🔹 *1. [Court Name]
 <blank line>
 Case Title: [Case Title]
+<blank line>
 📁 Case No: [Case Number]
+<blank line>
 📆 Date: [Date]
 <blank line>
 ⚖️ Issue: 
