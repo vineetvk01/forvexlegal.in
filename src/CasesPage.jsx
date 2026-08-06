@@ -49,8 +49,9 @@ FORMAT YOUR RESPONSE EXACTLY LIKE THIS (WhatsApp friendly):
 
 📅 *Forvex legal | Tax & Allied Laws Updates — [Todays Indian time DATE]*
 
-🔹 *1. [Case Title]* [Court Name]
+🔹 *1. [Court Name]
 <blank line>
+Case Title: [Case Title]
 📁 Case No: [Case Number]
 📆 Date: [Date]
 <blank line>
@@ -72,8 +73,9 @@ FORMAT YOUR RESPONSE EXACTLY LIKE THIS (WhatsApp friendly):
 ]
 🔗 [Tap to open judgment PDF](PDF LINK)
 
-🔹 *2. [Case Title]* [Court Name]
-<blank>
+🔹 *2. [Court Name]
+<blank line>
+Case Title: [Case Title]
 📁 Case No: [Case Number]
 📆 Date: [Date]
 <blank>
