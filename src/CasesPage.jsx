@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { FaTrash } from 'react-icons/fa';
 
 function formatDateLabel(dateString) {
@@ -15,6 +15,23 @@ function formatDateLabel(dateString) {
         : 'th';
 
   return `${day}${ordinal} ${month} ${year}`;
+}
+
+function encodeUrlsInText(text, fullEncode = true) {
+  // Regex to capture http/https URLs
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+  return text.replace(urlRegex, (match) => {
+    // Separate trailing punctuation (like periods or commas) at the end of a sentence
+    const cleanUrl = match.replace(/[.,!?)]+$/, '');
+    const trailingPunctuation = match.slice(cleanUrl.length);
+
+    // fullEncode = true -> encodeURIComponent (encodes :, /, ?, =, etc.)
+    // fullEncode = false -> encodeURI (preserves valid URL structure characters)
+    const encoded = fullEncode ? encodeURIComponent(cleanUrl) : encodeURI(cleanUrl);
+
+    return encoded + trailingPunctuation;
+  });
 }
 
 export default function CasesPage() {
@@ -114,6 +131,10 @@ RULES:
 - Always include the direct PDF link. If PDF is not directly accessible, include the case detail page link.
 - Do not add any extra commentary outside the format above. like NOTE. at the end, not needed`);
   const baseUrl = process.env.REACT_APP_SERVER_URL || '';
+  const [metadataChanged, setMetadataChanged] = useState(false);
+  const [savingMetadata, setSavingMetadata] = useState(false);
+  const [metadataSaveError, setMetadataSaveError] = useState('');
+  const [metadataSaveSuccess, setMetadataSaveSuccess] = useState('');
 
   function toggleSelection(item) {
       const id = item.tid;
@@ -175,7 +196,7 @@ RULES:
         formData.append('pdfs', file);
       });
 
-      const response = await fetch(`${baseUrl}/api/cases/summarize`, {
+      const response = await fetch(`${baseUrl}/api/court-cases/cases/summarize`, {
         method: 'POST',
         body: formData,
       });
@@ -211,7 +232,7 @@ RULES:
     setDeletingTid(item.tid);
 
     try {
-      const response = await fetch(`${baseUrl}/api/cases/${encodeURIComponent(item.tid)}`, {
+      const response = await fetch(`${baseUrl}/api/court-cases/cases/${encodeURIComponent(item.tid)}`, {
         method: 'DELETE',
       });
 
@@ -232,13 +253,137 @@ RULES:
     }
   }
 
+  const fetchMetadataPreText = useCallback(async () => {
+    try {
+      const response = await fetch(`${baseUrl}/api/metadata/pre-text`);
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      setBeforeText(data.text || '');
+    } catch (err) {
+      console.error('Error fetching metadata:', err);
+      return null;
+    }
+  }, [baseUrl]);
+
+  const fetchMetadataPostText = useCallback(async () => {
+    try {
+      const response = await fetch(`${baseUrl}/api/metadata/post-text`);
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      setAfterText(data.text || '');
+    } catch (err) {
+      console.error('Error fetching metadata:', err);
+      return null;
+    }
+  }, [baseUrl]);
+
+  const fetchMetadataPrompt = useCallback(async () => {
+    try {
+      const response = await fetch(`${baseUrl}/api/metadata/prompt`);
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      setPromptText(data.text || '');
+    } catch (err) {
+      console.error('Error fetching metadata:', err);
+      return null;
+    }
+  }, [baseUrl]);
+
+  const updateMetadataPreText = useCallback(async (text) => {
+    try {
+      const response = await fetch(`${baseUrl}/api/metadata/pre-text`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Update failed with status ${response.status}`);
+      }
+    } catch (err) {
+      console.error('Error updating pre-text metadata:', err);
+      throw err;
+    }
+  }, [baseUrl]);
+
+  const updateMetadataPostText = useCallback(async (text) => {
+    try {
+      const response = await fetch(`${baseUrl}/api/metadata/post-text`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Update failed with status ${response.status}`);
+      }
+    } catch (err) {
+      console.error('Error updating post-text metadata:', err);
+      throw err;
+    }
+  }, [baseUrl]);
+
+  const updateMetadataPrompt = useCallback(async (text) => {
+    try {
+      const response = await fetch(`${baseUrl}/api/metadata/prompt`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Update failed with status ${response.status}`);
+      }
+    } catch (err) {
+      console.error('Error updating prompt metadata:', err);
+      throw err;
+    }
+  }, [baseUrl]);
+
+  const saveMetadataSettings = useCallback(async () => {
+    try {
+      setMetadataSaveError('');
+      setMetadataSaveSuccess('');
+      setSavingMetadata(true);
+
+      await Promise.all([
+        updateMetadataPreText(beforeText),
+        updateMetadataPostText(afterText),
+        updateMetadataPrompt(promptText),
+      ]);
+
+      setMetadataChanged(false);
+      setMetadataSaveSuccess('Metadata saved successfully.');
+      window.setTimeout(() => setMetadataSaveSuccess(''), 2500);
+    } catch (err) {
+      setMetadataSaveError(err.message || 'Unable to save metadata.');
+    } finally {
+      setSavingMetadata(false);
+    }
+  }, [afterText, beforeText, promptText, updateMetadataPostText, updateMetadataPreText, updateMetadataPrompt]);
+
   useEffect(() => {
     let isMounted = true;
 
     async function fetchCases() {
       try {
         const baseUrl = process.env.REACT_APP_SERVER_URL || '';
-        const response = await fetch(`${baseUrl}/api/cases`);
+        const response = await fetch(`${baseUrl}/api/court-cases/cases`);
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
         }
@@ -258,6 +403,9 @@ RULES:
       }
     }
 
+    fetchMetadataPreText();
+    fetchMetadataPostText();
+    fetchMetadataPrompt();
     fetchCases();
 
     return () => {
@@ -298,7 +446,11 @@ RULES:
           <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Text before generated message</label>
           <textarea
             value={beforeText}
-            onChange={(e) => setBeforeText(e.target.value)}
+            onChange={(e) => {
+              setBeforeText(e.target.value);
+              setMetadataChanged(true);
+              setMetadataSaveSuccess('');
+            }}
             placeholder="Enter text to appear before the generated message"
             rows={3}
             style={{ width: '100%', padding: '0.7rem 0.8rem', borderRadius: 10, border: '1px solid #cbd5e1', background: '#fff', marginBottom: '0.75rem', resize: 'vertical', fontSize: '0.95rem', boxShadow: 'inset 0 1px 2px rgba(15,23,42,0.03)' }}
@@ -307,20 +459,48 @@ RULES:
           <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Prompt / instructions</label>
           <textarea
             value={promptText}
-            onChange={(e) => setPromptText(e.target.value)}
+            onChange={(e) => {
+              setPromptText(e.target.value);
+              setMetadataChanged(true);
+              setMetadataSaveSuccess('');
+            }}
             placeholder="Optional: enter a custom prompt to guide the summary generation"
-            rows={8}
+            rows={15}
             style={{ width: '100%', padding: '0.7rem 0.8rem', borderRadius: 10, border: '1px solid #cbd5e1', background: '#fff', marginBottom: '0.75rem', resize: 'vertical', fontSize: '0.95rem', boxShadow: 'inset 0 1px 2px rgba(15,23,42,0.03)' }}
           />
 
           <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Text after generated message</label>
           <textarea
             value={afterText}
-            onChange={(e) => setAfterText(e.target.value)}
+            onChange={(e) => {
+              setAfterText(e.target.value);
+              setMetadataChanged(true);
+              setMetadataSaveSuccess('');
+            }}
             placeholder="Enter text to appear after the generated message"
-            rows={3}
+            rows={8}
             style={{ width: '100%', padding: '0.7rem 0.8rem', borderRadius: 10, border: '1px solid #cbd5e1', background: '#fff', marginBottom: '0.75rem', resize: 'vertical', fontSize: '0.95rem', boxShadow: 'inset 0 1px 2px rgba(15,23,42,0.03)' }}
           />
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center', marginBottom: '0.75rem' }}>
+            <button
+              type="button"
+              onClick={saveMetadataSettings}
+              disabled={!metadataChanged || savingMetadata}
+              style={{
+                padding: '0.75rem 1rem',
+                borderRadius: 999,
+                background: !metadataChanged || savingMetadata ? '#e2e8f0' : '#0f172a',
+                color: !metadataChanged || savingMetadata ? '#94a3b8' : '#fff',
+                border: 'none',
+                cursor: !metadataChanged || savingMetadata ? 'not-allowed' : 'pointer',
+                fontWeight: 700,
+              }}
+            >
+              {savingMetadata ? 'Saving…' : 'Save prompt & text settings'}
+            </button>
+            {metadataSaveSuccess && <span style={{ color: '#16a34a', fontSize: '0.95rem' }}>{metadataSaveSuccess}</span>}
+            {metadataSaveError && <span style={{ color: '#b91c1c', fontSize: '0.95rem' }}>{metadataSaveError}</span>}
+          </div>
 
           <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>Upload PDFs (max 5)</label>
           <div style={{ border: '1px dashed #94a3b8', borderRadius: 12, padding: '0.8rem 0.9rem', background: '#fff', marginBottom: '0.75rem' }}>
@@ -371,7 +551,7 @@ RULES:
           {summaryResponse && (
             <div style={{ marginTop: '0.75rem', padding: '1rem', background: '#ffffff', borderRadius: 12, border: '1px solid rgba(15,23,42,0.08)' }}>
               <strong>Summary result</strong>
-              <p style={{ marginTop: '0.5rem', whiteSpace: 'pre-wrap', color: '#334155' }}>{summaryResponse}</p>
+              <p style={{ marginTop: '0.5rem', whiteSpace: 'pre-wrap', color: '#334155' }}>{encodeUrlsInText(summaryResponse)}</p>
               <div style={{ marginTop: 12, display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
                 <button
                   type="button"
