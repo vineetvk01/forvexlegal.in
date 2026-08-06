@@ -30,9 +30,13 @@ export default function CasesPage() {
   const [pdfFiles, setPdfFiles] = useState([]);
   const [uploadError, setUploadError] = useState('');
   const [beforeText, setBeforeText] = useState('');
-  const [afterText, setAfterText] = useState(`www.forvexlegal.in
+  const [afterText, setAfterText] = useState(`For litigation and advisory in Income Tax, GST, Customs, FEMA, PMLA, Benami, Black Money Act, and other Economic Offence matters, connect with Forvex Legal.
 
-(Founded by Adv. (CA) Shikhar Garg).`);
+🌐 www.forvexlegal.in
+📞 +91 9013265820. 
+
+Forvex Legal
+Founded by Adv. (CA) Shikhar Garg`);
   const [promptText, setPromptText] = useState(`You are a legal research assistant specializing in Indian taxation law.
 
 Your task is to analyse the Delhi,Bombay High court & Supreme court judgements shared above
