@@ -79,7 +79,7 @@ Case Title: [Case Title]
     * It should be written in 2–4 concise lines.
     * Wherever possible, add a very short practical analysis (1–2 lines) explaining when practitioners can rely on this judgment.
 ]
-🔗 *Tap to open judgment:* if "indiankanoon link is present" share indian kanoon link / pdf link. [ DON'T include any link if indiankanoon link is not present. NO NEED TO SHOW ANY LINK IN THAT CASE ]
+🔗 *Tap to open judgment:* if "indiankanoon link is present" share pdf link or doc link. [ DON'T include any link if indiankanoon link is not present. NO NEED TO SHOW ANY LINK IN THAT CASE ]
 
 🔹 *2. [Court Name]
 <blank line>
@@ -103,7 +103,7 @@ Case Title: [Case Title]
     * It should be written in 2–4 concise lines.
     * Wherever possible, add a very short practical analysis (1–2 lines) explaining when practitioners can rely on this judgment.
 ]
-🔗 *Tap to open judgment:* if "indiankanoon link is present" share indian kanoon link / pdf link. [ DON'T include any link if indiankanoon link is not present. NO NEED TO SHOW ANY LINK IN THAT CASE ]
+🔗 *Tap to open judgment:* if "indiankanoon link is present" share pdf link or doc link. [ DON'T include any link if indiankanoon link is not present. NO NEED TO SHOW ANY LINK IN THAT CASE ]
 
 ...and soo on for all selected judgments. For each judgment, provide the above details in the same format.
 
