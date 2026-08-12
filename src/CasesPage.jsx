@@ -647,7 +647,7 @@ RULES:
                     <p style={{ fontSize: '0.9rem', lineHeight: 1.6, marginTop: '0.5rem' }}>
                       {item.headline ? item.headline.replace(/<[^>]+>/g, '').trim() : 'No summary available.'}
                       <br />
-                      <a href="https://indiankanoon.org/doc/{item.tid}" target="_blank"> More Info </a>
+                      <a href=`https://indiankanoon.org/doc/${item.tid}` target="_blank"> More Info </a>
                     </p>
                   </div>
                   <div className="card-meta" style={{ marginTop: 'auto', marginLeft: '-1.25rem', marginRight: '-1.25rem', width: 'calc(100% + 2.5rem)', display: 'flex', flexDirection: 'column' }}>
