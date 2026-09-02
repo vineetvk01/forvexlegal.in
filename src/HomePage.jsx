@@ -1,22 +1,21 @@
-import { useState } from 'react';
 import {
   FiArrowRight,
   FiBookOpen,
   FiBriefcase,
   FiCheckCircle,
-  FiChevronDown,
   FiClock,
   FiCompass,
   FiFileText,
   FiHome,
   FiMail,
   FiMapPin,
-  FiPaperclip,
   FiPhone,
   FiShield,
   FiTarget,
   FiUserCheck,
 } from 'react-icons/fi';
+
+const CALENDLY_URL = 'https://calendly.com/cashikhargarg/30min';
 
 const practiceAreas = [
   ['Income Tax Litigation', 'Assessments, reassessments and appeals before CIT(A), ITAT and the High Court.'],
@@ -48,78 +47,19 @@ const matters = [
   ['High Court Representation', 'Writ remedies pursued where statutory appellate routes were inadequate or time-barred.'],
 ];
 
-function ConsultationForm() {
-  const [submitted, setSubmitted] = useState(false);
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    setSubmitted(true);
-  }
-
+function CalendlyScheduler() {
   return (
-    <form className="consultation-form" onSubmit={handleSubmit}>
-      <div className="field-group">
-        <label htmlFor="name">Name</label>
-        <input id="name" name="name" placeholder="Full name" required />
-      </div>
-      <div className="field-group">
-        <label htmlFor="email">Email</label>
-        <input id="email" name="email" type="email" placeholder="name@firm.com" required />
-      </div>
-      <div className="field-group">
-        <label htmlFor="phone">Mobile Number</label>
-        <input id="phone" name="phone" type="tel" placeholder="+91" required />
-      </div>
-      <div className="field-group">
-        <label htmlFor="organisation">Organisation</label>
-        <input id="organisation" name="organisation" placeholder="Firm / Company" />
-      </div>
-      <div className="field-group select-field">
-        <label htmlFor="category">Professional Category</label>
-        <select id="category" name="category" defaultValue="">
-          <option value="" disabled>Select category</option>
-          <option>Chartered Accountant</option>
-          <option>Company Secretary</option>
-          <option>Tax Professional</option>
-          <option>Promoter / CFO</option>
-          <option>Individual</option>
-        </select>
-        <FiChevronDown aria-hidden="true" />
-      </div>
-      <div className="field-group select-field">
-        <label htmlFor="matter">Practice Area</label>
-        <select id="matter" name="matter" defaultValue="">
-          <option value="" disabled>Select practice area</option>
-          {practiceAreas.map(([title]) => (
-            <option key={title}>{title}</option>
-          ))}
-        </select>
-        <FiChevronDown aria-hidden="true" />
-      </div>
-      <div className="field-group">
-        <label htmlFor="date">Preferred Date</label>
-        <input id="date" name="date" type="date" />
-      </div>
-      <div className="field-group">
-        <label htmlFor="time">Preferred Time</label>
-        <input id="time" name="time" type="time" />
-      </div>
-      <div className="field-group wide">
-        <label htmlFor="description">Brief Description Of Matter</label>
-        <textarea id="description" name="description" placeholder="Nature of proceedings, forum, statutory timelines" rows={4} />
-      </div>
-      <label className="upload-field wide" htmlFor="documents">
-        <FiPaperclip aria-hidden="true" />
-        <span>Attach notices, orders or submissions (optional)</span>
-        <input id="documents" name="documents" type="file" multiple />
-      </label>
-      <button className="btn primary wide" type="submit">
-        Schedule Consultation
-        <FiArrowRight aria-hidden="true" />
-      </button>
-      {submitted && <p className="form-status wide">Thank you. The consultation request has been noted.</p>}
-      <p className="form-note wide">Submitting this form does not create an advocate-client relationship. Information shared is kept confidential.</p>
-    </form>
+    <div className="calendly-panel">
+      <iframe
+        title="Schedule a consultation with Forvex Legal"
+        src={`${CALENDLY_URL}?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=c8a865`}
+        loading="lazy"
+      />
+      <p>
+        Having trouble loading the scheduler?{' '}
+        <a href={CALENDLY_URL} target="_blank" rel="noreferrer">Open Calendly</a>
+      </p>
+    </div>
   );
 }
 
@@ -137,7 +77,7 @@ export default function HomePage() {
             A boutique litigation practice representing clients in complex tax, regulatory and economic offence matters before Tribunals, High Courts and other adjudicating authorities.
           </p>
           <div className="hero-actions">
-            <a className="btn primary" href="#consultation">
+            <a className="btn primary" href={CALENDLY_URL} target="_blank" rel="noreferrer">
               Book a Consultation
               <FiArrowRight aria-hidden="true" />
             </a>
@@ -259,14 +199,14 @@ export default function HomePage() {
           <div>
             <p className="eyebrow">Book A Consultation</p>
             <h2>Discuss your matter in confidence</h2>
-            <p className="section-intro">Share the outline of the proceeding, the forum and any statutory deadline. We will revert with a proposed time and the documents required for a substantive first discussion.</p>
+            <p className="section-intro">Choose an available 30-minute slot on Calendly for a focused first discussion. Keep the proceeding forum, notice date and urgent statutory timelines ready for the call.</p>
             <ul className="consultation-points">
               <li><FiFileText aria-hidden="true" />Notice and order review</li>
               <li><FiShield aria-hidden="true" />Forum and remedy assessment</li>
-              <li><FiCheckCircle aria-hidden="true" />Response within one working day</li>
+              <li><FiCheckCircle aria-hidden="true" />Direct Calendly scheduling</li>
             </ul>
           </div>
-          <ConsultationForm />
+          <CalendlyScheduler />
         </div>
       </section>
 

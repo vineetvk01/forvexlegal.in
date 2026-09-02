@@ -132,6 +132,7 @@ main {
 }
 
 .nav-links button,
+.nav-links a,
 .foot-links button,
 .site-footer button {
   border: 0;
@@ -139,14 +140,19 @@ main {
   cursor: pointer;
 }
 
-.nav-links button {
+.nav-links button,
+.nav-links a {
   min-height: 40px;
+  display: inline-flex;
+  align-items: center;
   padding: 0 12px;
   color: rgba(255, 255, 255, 0.78);
   font-size: 0.88rem;
+  text-decoration: none;
 }
 
 .nav-links button:hover,
+.nav-links a:hover,
 .nav-links button.active {
   color: #ffffff;
 }
@@ -340,8 +346,6 @@ h3 {
 .matter-item p,
 .founder-copy p,
 .contact-list,
-.form-note,
-.form-status,
 .site-footer p {
   color: var(--muted);
 }
@@ -559,110 +563,36 @@ h3 {
   flex: 0 0 auto;
 }
 
-.consultation-form {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 32px;
-  row-gap: 28px;
-  padding: clamp(28px, 5vw, 54px);
+.calendly-panel {
+  overflow: hidden;
   border: 1px solid var(--line);
   background: #ffffff;
 }
 
-.field-group {
-  position: relative;
-  min-width: 0;
-}
-
-.field-group.wide,
-.upload-field.wide,
-.consultation-form .btn.wide,
-.consultation-form .form-note.wide,
-.consultation-form .form-status.wide {
-  grid-column: 1 / -1;
-}
-
-.field-group label {
+.calendly-panel iframe {
   display: block;
-  margin-bottom: 8px;
-  color: var(--gold-dark);
-  font-size: 0.72rem;
-  font-weight: 800;
-  line-height: 1.4;
-  text-transform: uppercase;
-}
-
-.field-group input,
-.field-group select,
-.field-group textarea {
   width: 100%;
-  min-height: 42px;
+  height: 760px;
   border: 0;
-  border-bottom: 1px solid var(--line);
-  border-radius: 0;
-  outline: 0;
-  background: transparent;
-  color: var(--ink);
-  font-size: 0.95rem;
+  background: #ffffff;
 }
 
-.field-group textarea {
-  min-height: 98px;
-  padding-top: 8px;
-  resize: vertical;
-}
-
-.field-group input:focus,
-.field-group select:focus,
-.field-group textarea:focus {
-  border-color: var(--gold-dark);
-}
-
-.field-group select {
-  appearance: none;
-  padding-right: 34px;
-}
-
-.select-field svg {
-  position: absolute;
-  right: 4px;
-  bottom: 14px;
+.calendly-panel p {
+  padding: 16px 20px 20px;
+  border-top: 1px solid var(--line);
   color: var(--muted);
-  pointer-events: none;
-}
-
-.upload-field {
-  min-height: 58px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 18px;
-  border: 1px dashed #c9cfd6;
-  color: var(--muted);
-  cursor: pointer;
-}
-
-.upload-field input {
-  width: 1px;
-  height: 1px;
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.consultation-form .btn {
-  width: 100%;
-}
-
-.form-status {
-  color: #276749;
-  font-size: 0.94rem;
-  font-weight: 700;
-}
-
-.form-note {
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   line-height: 1.7;
+}
+
+.calendly-panel a {
+  color: var(--gold-dark);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.calendly-panel a:hover {
+  text-decoration: underline;
 }
 
 .contact-layout {
@@ -907,7 +837,8 @@ h3 {
     display: grid;
   }
 
-  .nav-links button {
+  .nav-links button,
+  .nav-links a {
     width: 100%;
     min-height: 46px;
     padding: 0 14px;
@@ -1027,16 +958,8 @@ h3 {
     gap: 18px;
   }
 
-  .consultation-form {
-    grid-template-columns: 1fr;
-  }
-
-  .field-group.wide,
-  .upload-field.wide,
-  .consultation-form .btn.wide,
-  .consultation-form .form-note.wide,
-  .consultation-form .form-status.wide {
-    grid-column: auto;
+  .calendly-panel iframe {
+    height: 680px;
   }
 
   .map-preview img {
