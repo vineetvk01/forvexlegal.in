@@ -4,6 +4,8 @@ import { FiArrowRight, FiMenu, FiX } from 'react-icons/fi';
 import HomePage from './HomePage';
 import CasesPage from './CasesPage';
 
+const CALENDLY_URL = 'https://calendly.com/cashikhargarg/30min';
+
 function PrivacyPolicy() {
   return (
     <section className="page-section container">
@@ -102,10 +104,10 @@ function AppContent() {
               <button type="button" onClick={() => navigateHome('contact')}>
                 Contact
               </button>
-              <button type="button" className="nav-cta" onClick={() => navigateHome('consultation')}>
+              <a className="nav-cta" href={CALENDLY_URL} target="_blank" rel="noreferrer" onClick={() => setMobileOpen(false)}>
                 Book a Consultation
                 <FiArrowRight aria-hidden="true" />
-              </button>
+              </a>
             </nav>
           </div>
         </div>
