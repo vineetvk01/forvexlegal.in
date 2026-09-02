@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { FiArrowRight, FiMenu, FiX } from 'react-icons/fi';
 import HomePage from './HomePage';
 import CasesPage from './CasesPage';
 
@@ -45,11 +46,37 @@ function AppContent() {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
+
+  function navigateHome(sectionId) {
+    const scrollToTarget = () => {
+      const target = sectionId ? document.getElementById(sectionId) : null;
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+
+    if (location.pathname !== '/') {
+      navigate('/');
+      window.setTimeout(scrollToTarget, 80);
+    } else {
+      scrollToTarget();
+    }
+
+    setMobileOpen(false);
+  }
+
   return (
     <div className="app-shell">
-      <header className="site-header">
+      <header className={`site-header ${mobileOpen ? 'menu-open' : ''}`}>
         <div className="container nav">
-          <div className="brand">Forvex Legal</div>
+          <button type="button" className="brand" onClick={() => navigateHome()}>
+            <span>Forvex</span> <strong>Legal</strong>
+          </button>
           <div className="nav-controls">
             <button
               className="menu-toggle"
@@ -57,40 +84,69 @@ function AppContent() {
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               onClick={() => setMobileOpen(!mobileOpen)}
             >
-              {mobileOpen ? '✕' : '☰'}
+              {mobileOpen ? <FiX aria-hidden="true" /> : <FiMenu aria-hidden="true" />}
             </button>
-            <nav className={`nav-links ${mobileOpen ? 'open' : ''}`}>
-              <button type="button" className={location.pathname === '/' ? 'active' : ''} onClick={() => { navigate('/'); setMobileOpen(false); }}>
+            <nav className={`nav-links ${mobileOpen ? 'open' : ''}`} aria-label="Primary navigation">
+              <button type="button" className={location.pathname === '/' ? 'active' : ''} onClick={() => navigateHome()}>
                 Home
               </button>
-              <button type="button" className={location.pathname === '/privacy' ? 'active' : ''} onClick={() => { navigate('/privacy'); setMobileOpen(false); }}>
-                Privacy Policy
+              <button type="button" onClick={() => navigateHome('about')}>
+                About
               </button>
-              <button type="button" className={location.pathname === '/terms' ? 'active' : ''} onClick={() => { navigate('/terms'); setMobileOpen(false); }}>
-                Terms & Conditions
+              <button type="button" onClick={() => navigateHome('practice')}>
+                Practice Areas
+              </button>
+              <button type="button" onClick={() => navigateHome('founder')}>
+                Founder
+              </button>
+              <button type="button" onClick={() => navigateHome('contact')}>
+                Contact
+              </button>
+              <button type="button" className="nav-cta" onClick={() => navigateHome('consultation')}>
+                Book a Consultation
+                <FiArrowRight aria-hidden="true" />
               </button>
             </nav>
           </div>
         </div>
       </header>
 
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/cases" element={<CasesPage />} />
-        <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/terms" element={<TermsConditions />} />
-      </Routes>
+      <main>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/cases" element={<CasesPage />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsConditions />} />
+        </Routes>
+      </main>
 
       <footer className="site-footer">
-        <div className="container">
-          <small>© {new Date().getFullYear()} Forvex Legal — All rights reserved.</small>
+        <div className="container footer-grid">
+          <div className="footer-brand">
+            <div className="footer-logo">
+              Forvex <span>Legal</span>
+            </div>
+            <p>Boutique litigation and advisory practice in tax, regulatory and economic offence matters.</p>
+          </div>
+          <div>
+            <h3>Navigate</h3>
+            <button type="button" onClick={() => navigateHome()}>Home</button>
+            <button type="button" onClick={() => navigateHome('about')}>About</button>
+            <button type="button" onClick={() => navigateHome('practice')}>Practice Areas</button>
+            <button type="button" onClick={() => navigateHome('founder')}>Founder</button>
+            <button type="button" onClick={() => navigate('/cases')}>Cases</button>
+            <button type="button" onClick={() => navigateHome('contact')}>Contact</button>
+          </div>
+          <div>
+            <h3>Disclaimer</h3>
+            <p>In compliance with the Bar Council of India Rules, this website is for general understanding only and does not constitute legal advice.</p>
+          </div>
+        </div>
+        <div className="container footer-bottom">
+          <small>Copyright © Forvex Legal</small>
           <div className="foot-links">
-            <button type="button" onClick={() => navigate('/privacy')}>
-              Privacy
-            </button>
-            <button type="button" onClick={() => navigate('/terms')}>
-              Terms
-            </button>
+            <button type="button" onClick={() => navigate('/privacy')}>Privacy Policy</button>
+            <button type="button" onClick={() => navigate('/terms')}>Disclaimer</button>
           </div>
         </div>
       </footer>
