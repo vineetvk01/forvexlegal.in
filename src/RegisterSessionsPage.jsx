@@ -1,7 +1,12 @@
 import { useMemo, useState } from 'react';
 import { FiCheckCircle, FiLoader } from 'react-icons/fi';
 
-const REGISTRATION_ENDPOINT = process.env.REACT_APP_GOOGLE_SHEET_WEB_APP_URL || process.env.REACT_APP_SESSION_REGISTRATION_ENDPOINT || '';
+const GOOGLE_FORM_ACTION_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSexYF_CHDABS3Df0pTpL_vBF7CupIrE4jbT-LOw0h4EGrzBHQ/formResponse';
+const GOOGLE_FORM_ENTRY_IDS = {
+  name: 'entry.1073527440',
+  email: 'entry.570671403',
+  phone: 'entry.1725915021',
+};
 
 function getErrors(values) {
   const errors = {};
@@ -53,36 +58,28 @@ export default function RegisterSessionsPage() {
       return;
     }
 
-    if (!REGISTRATION_ENDPOINT) {
-      setStatus('error');
-      setMessage('Registration endpoint is not configured.');
-      return;
-    }
-
     const formData = new FormData();
-    formData.append('name', values.name.trim());
-    formData.append('email', values.email.trim());
-    formData.append('phone', `+91${values.phone}`);
+    formData.append(GOOGLE_FORM_ENTRY_IDS.name, values.name.trim());
+    formData.append(GOOGLE_FORM_ENTRY_IDS.email, values.email.trim());
+    formData.append(GOOGLE_FORM_ENTRY_IDS.phone, `+91${values.phone}`);
 
     setStatus('submitting');
     setMessage('');
 
     try {
-      const isGoogleScript = /script\.google\.com|script\.googleusercontent\.com/.test(REGISTRATION_ENDPOINT);
-
-      await fetch(REGISTRATION_ENDPOINT, {
+      await fetch(GOOGLE_FORM_ACTION_URL, {
         method: 'POST',
+        mode: 'no-cors',
         body: formData,
-        mode: isGoogleScript ? 'no-cors' : 'cors',
       });
 
       setStatus('success');
-      setMessage('You are registered. We will share the session details soon.');
+      setMessage('Thank you! Your information has been received.');
       setValues({ name: '', email: '', phone: '' });
       setTouched({});
     } catch (error) {
       setStatus('error');
-      setMessage(error.message || 'Unable to register right now. Please try again.');
+      setMessage(error.message || 'Submission failed. Please check your details and try again.');
     }
   }
 
