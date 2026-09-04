@@ -81,6 +81,9 @@ export default function HomePage() {
               Book a Consultation
               <FiArrowRight aria-hidden="true" />
             </a>
+            <a className="btn secondary" href="/register-sessions">
+              Register Session
+            </a>
             <a className="btn secondary" href="#practice">View Practice Areas</a>
           </div>
           <div className="hero-metrics" aria-label="Practice highlights">

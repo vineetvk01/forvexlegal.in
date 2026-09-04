@@ -1,0 +1,194 @@
+import { useMemo, useState } from 'react';
+import { FiCheckCircle, FiLoader } from 'react-icons/fi';
+
+const REGISTRATION_ENDPOINT = process.env.REACT_APP_GOOGLE_SHEET_WEB_APP_URL || process.env.REACT_APP_SESSION_REGISTRATION_ENDPOINT || '';
+
+function getErrors(values) {
+  const errors = {};
+  const name = values.name.trim();
+  const email = values.email.trim();
+
+  if (name.length < 2) {
+    errors.name = 'Enter your full name.';
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errors.email = 'Enter a valid email address.';
+  }
+
+  if (!/^[6-9]\d{9}$/.test(values.phone)) {
+    errors.phone = 'Enter a valid 10 digit Indian mobile number.';
+  }
+
+  return errors;
+}
+
+export default function RegisterSessionsPage() {
+  const [values, setValues] = useState({ name: '', email: '', phone: '' });
+  const [touched, setTouched] = useState({});
+  const [status, setStatus] = useState('idle');
+  const [message, setMessage] = useState('');
+  const errors = useMemo(() => getErrors(values), [values]);
+  const isValid = Object.keys(errors).length === 0;
+  const isSubmitting = status === 'submitting';
+
+  function updateValue(field, value) {
+    setStatus('idle');
+    setMessage('');
+    setValues((current) => ({
+      ...current,
+      [field]: field === 'phone' ? value.replace(/\D/g, '').slice(0, 10) : value,
+    }));
+  }
+
+  function markTouched(field) {
+    setTouched((current) => ({ ...current, [field]: true }));
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setTouched({ name: true, email: true, phone: true });
+
+    if (!isValid) {
+      return;
+    }
+
+    if (!REGISTRATION_ENDPOINT) {
+      setStatus('error');
+      setMessage('Registration endpoint is not configured.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('name', values.name.trim());
+    formData.append('email', values.email.trim());
+    formData.append('phone', `+91${values.phone}`);
+
+    setStatus('submitting');
+    setMessage('');
+
+    try {
+      const isGoogleScript = /script\.google\.com|script\.googleusercontent\.com/.test(REGISTRATION_ENDPOINT);
+
+      await fetch(REGISTRATION_ENDPOINT, {
+        method: 'POST',
+        body: formData,
+        mode: isGoogleScript ? 'no-cors' : 'cors',
+      });
+
+      setStatus('success');
+      setMessage('You are registered. We will share the session details soon.');
+      setValues({ name: '', email: '', phone: '' });
+      setTouched({});
+    } catch (error) {
+      setStatus('error');
+      setMessage(error.message || 'Unable to register right now. Please try again.');
+    }
+  }
+
+  return (
+    <div className="register-page">
+      <section className="register-content-panel" aria-labelledby="session-title">
+        <div className="register-content">
+          <h1 id="session-title">30 Minutes Covering 30 Days - IT, GST & Litigations</h1>
+          <p className="register-author">By CA Shikhar Garg</p>
+          <img className="register-session-image" src="/assets/session-discussion-banner.jpg" alt="Monthly discussion session for practising CAs" />
+          <div className="register-description">
+            <p>A Strict 30 Mins Session - First Thursday of every month at 6 PM.</p>
+            <p>A session where the</p>
+            <p>a) New case laws,</p>
+            <p>b) amendments and</p>
+            <p>c) new Guidelines</p>
+            <p>in the Income Tax Act, GST and Litigations are discussed.</p>
+            <p>Along with some Bonus Tips useful in practical life.</p>
+            <p>A Session exclusively for Practising CAs to align with the INDIA 2047 Goals. As a community Service for the CA Fraternity.</p>
+          </div>
+        </div>
+        <footer className="register-footer">
+          <span>CA Shikhar Garg</span>
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+        </footer>
+      </section>
+
+      <section className="register-form-panel" aria-labelledby="registration-title">
+        <div className="register-form-wrap">
+          <h2 id="registration-title">Registration details</h2>
+          <p>Complete your registration by providing these details.</p>
+
+          <form className="register-form" onSubmit={handleSubmit} noValidate>
+            <fieldset className="register-fieldset">
+              <legend>Registration information</legend>
+              <div className={`register-input-wrap ${touched.name && errors.name ? 'has-error' : ''}`}>
+                <label htmlFor="session-name">Name</label>
+                <input
+                  id="session-name"
+                  name="name"
+                  autoComplete="name"
+                  value={values.name}
+                  onBlur={() => markTouched('name')}
+                  onChange={(event) => updateValue('name', event.target.value)}
+                  placeholder="Name"
+                />
+              </div>
+              {touched.name && errors.name && <span className="register-error">{errors.name}</span>}
+
+              <div className={`register-input-wrap ${touched.email && errors.email ? 'has-error' : ''}`}>
+                <label htmlFor="session-email">Email</label>
+                <input
+                  id="session-email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  value={values.email}
+                  onBlur={() => markTouched('email')}
+                  onChange={(event) => updateValue('email', event.target.value)}
+                  placeholder="Email"
+                />
+              </div>
+              {touched.email && errors.email && <span className="register-error">{errors.email}</span>}
+
+              <div className={`register-input-wrap phone-wrap ${touched.phone && errors.phone ? 'has-error' : ''}`}>
+                <label htmlFor="session-phone">Phone</label>
+                <div className="register-phone-code" aria-hidden="true">
+                  <span className="india-flag" />
+                  <span>+91</span>
+                  <span className="code-caret" />
+                </div>
+                <input
+                  id="session-phone"
+                  name="phone"
+                  type="tel"
+                  inputMode="numeric"
+                  autoComplete="tel-national"
+                  value={values.phone}
+                  onBlur={() => markTouched('phone')}
+                  onChange={(event) => updateValue('phone', event.target.value)}
+                  placeholder="Phone"
+                />
+              </div>
+              {touched.phone && errors.phone && <span className="register-error">{errors.phone}</span>}
+            </fieldset>
+
+            <button className="register-submit" type="submit" disabled={!isValid || isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <FiLoader aria-hidden="true" />
+                  Registering...
+                </>
+              ) : (
+                'Register Now'
+              )}
+            </button>
+            {message && (
+              <p className={`register-message ${status}`}>
+                {status === 'success' && <FiCheckCircle aria-hidden="true" />}
+                {message}
+              </p>
+            )}
+          </form>
+        </div>
+      </section>
+    </div>
+  );
+}
