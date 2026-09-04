@@ -810,6 +810,275 @@ h3 {
   opacity: 0.6;
 }
 
+.register-shell {
+  background: #ffffff;
+}
+
+.register-shell main {
+  flex: 1;
+}
+
+.register-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  width: min(100% - 72px, 1040px);
+  margin: 0 auto;
+  background: #ffffff;
+  color: #111318;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.register-content-panel {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(48px, 7.8vw, 82px) 40px 44px 0;
+  border-right: 1px solid #d9dee5;
+  background: #ffffff;
+}
+
+.register-content {
+  width: min(100%, 425px);
+}
+
+.register-content h1 {
+  color: #080b10;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.75rem, 2.45vw, 2rem);
+  font-weight: 850;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.register-author {
+  margin-top: 10px;
+  color: #313741;
+  font-size: 0.92rem;
+}
+
+.register-session-image {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  border-radius: 5px;
+  aspect-ratio: 425 / 239;
+  object-fit: cover;
+}
+
+.register-description {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+  color: #080b10;
+  font-size: 1rem;
+  font-weight: 760;
+  line-height: 1.45;
+}
+
+.register-footer {
+  width: min(100%, 425px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #eceff2;
+  color: #343941;
+  font-size: 0.82rem;
+}
+
+.register-footer a {
+  color: #24282f;
+}
+
+.register-form-panel {
+  min-height: 100vh;
+  padding: clamp(48px, 7.8vw, 82px) 0 clamp(48px, 7.8vw, 82px) 48px;
+  background: #ffffff;
+}
+
+.register-form-wrap {
+  width: min(100%, 425px);
+}
+
+.register-form-wrap h2 {
+  color: #080b10;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.28rem;
+  font-weight: 850;
+  line-height: 1.25;
+}
+
+.register-form-wrap > p {
+  margin-top: 8px;
+  color: #565e68;
+  font-size: 0.94rem;
+}
+
+.register-form {
+  margin-top: 34px;
+}
+
+.register-fieldset {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #d9dfe6;
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.register-fieldset legend {
+  display: block;
+  width: 100%;
+  padding: 12px 13px 13px;
+  color: #3e444d;
+  font-size: 0.98rem;
+  font-weight: 760;
+}
+
+.register-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 45px;
+  border-top: 1px solid #d5d9df;
+  background: #ffffff;
+}
+
+.register-input-wrap label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.register-input-wrap input {
+  width: 100%;
+  min-height: 45px;
+  border: 0;
+  outline: 0;
+  padding: 0 14px;
+  background: transparent;
+  color: #111318;
+  font-size: 0.94rem;
+}
+
+.register-input-wrap input::placeholder {
+  color: #8d96a4;
+  opacity: 1;
+}
+
+.register-input-wrap:focus-within {
+  box-shadow: inset 0 0 0 1px #9aa7b7;
+}
+
+.register-input-wrap.has-error {
+  box-shadow: inset 0 0 0 1px #d64545;
+}
+
+.phone-wrap {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+}
+
+.register-phone-code {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 14px;
+  border-right: 1px solid #d5d9df;
+  color: #111318;
+}
+
+.india-flag {
+  width: 19px;
+  height: 13px;
+  display: inline-block;
+  background: linear-gradient(#ff9933 0 33.33%, #ffffff 33.33% 66.66%, #138808 66.66% 100%);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.code-caret {
+  width: 0;
+  height: 0;
+  display: inline-block;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #4d545e;
+}
+
+.register-error {
+  display: block;
+  padding: 6px 14px 0;
+  color: #be2f2f;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.register-submit {
+  width: 100%;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 32px;
+  border: 0;
+  border-radius: 5px;
+  background: #111318;
+  color: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 160ms ease, opacity 160ms ease;
+}
+
+.register-submit:disabled {
+  background: #c7c7c9;
+  cursor: not-allowed;
+}
+
+.register-submit:not(:disabled):hover {
+  background: #000000;
+}
+
+.register-submit svg {
+  animation: register-spin 900ms linear infinite;
+}
+
+.register-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.register-message.success {
+  color: #187042;
+}
+
+.register-message.error {
+  color: #be2f2f;
+}
+
+.register-message.success svg {
+  flex: 0 0 auto;
+  animation: none;
+}
+
+@keyframes register-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 980px) {
   .container,
   .hero-inner {
@@ -873,6 +1142,34 @@ h3 {
   .founder-frame {
     justify-self: start;
     width: min(100%, 360px);
+  }
+
+  .register-page {
+    grid-template-columns: 1fr;
+    width: min(100% - 40px, 560px);
+  }
+
+  .register-content-panel,
+  .register-form-panel {
+    min-height: auto;
+    padding: 42px 0;
+    border-right: 0;
+  }
+
+  .register-form-panel {
+    border-top: 1px solid #d9dee5;
+  }
+
+  .register-content,
+  .register-footer,
+  .register-form-wrap {
+    width: min(100%, 560px);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .register-footer {
+    margin-top: 44px;
   }
 }
 
@@ -996,5 +1293,39 @@ h3 {
   .select-case-btn {
     padding: 0.8rem 0.75rem;
     font-size: 0.95rem;
+  }
+
+  .register-content-panel,
+  .register-form-panel {
+    padding: 32px 0;
+  }
+
+  .register-page {
+    width: min(100% - 28px, 520px);
+  }
+
+  .register-content h1 {
+    font-size: 1.62rem;
+  }
+
+  .register-description {
+    gap: 10px;
+    font-size: 0.96rem;
+  }
+
+  .register-form {
+    margin-top: 28px;
+  }
+
+  .phone-wrap {
+    grid-template-columns: 86px minmax(0, 1fr);
+  }
+
+  .register-phone-code {
+    padding-left: 12px;
+  }
+
+  .register-submit {
+    margin-top: 28px;
   }
 }

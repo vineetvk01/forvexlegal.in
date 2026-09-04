@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, useLocation, useNavigate } from 'react-ro
 import { FiArrowRight, FiMenu, FiX } from 'react-icons/fi';
 import HomePage from './HomePage';
 import CasesPage from './CasesPage';
+import RegisterSessionsPage from './RegisterSessionsPage';
 
 const CALENDLY_URL = 'https://calendly.com/cashikhargarg/30min';
 
@@ -47,6 +48,7 @@ function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const isRegisterSessionsRoute = location.pathname.startsWith('/register-sessions');
 
   useEffect(() => {
     setMobileOpen(false);
@@ -73,8 +75,8 @@ function AppContent() {
   }
 
   return (
-    <div className="app-shell">
-      <header className={`site-header ${mobileOpen ? 'menu-open' : ''}`}>
+    <div className={`app-shell ${isRegisterSessionsRoute ? 'register-shell' : ''}`}>
+      {!isRegisterSessionsRoute && <header className={`site-header ${mobileOpen ? 'menu-open' : ''}`}>
         <div className="container nav">
           <button type="button" className="brand" onClick={() => navigateHome()}>
             <span>Forvex</span> <strong>Legal</strong>
@@ -111,18 +113,19 @@ function AppContent() {
             </nav>
           </div>
         </div>
-      </header>
+      </header>}
 
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/cases" element={<CasesPage />} />
+          <Route path="/register-sessions" element={<RegisterSessionsPage />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsConditions />} />
         </Routes>
       </main>
 
-      <footer className="site-footer">
+      {!isRegisterSessionsRoute && <footer className="site-footer">
         <div className="container footer-grid">
           <div className="footer-brand">
             <div className="footer-logo">
@@ -151,7 +154,7 @@ function AppContent() {
             <button type="button" onClick={() => navigate('/terms')}>Disclaimer</button>
           </div>
         </div>
-      </footer>
+      </footer>}
     </div>
   );
 }
