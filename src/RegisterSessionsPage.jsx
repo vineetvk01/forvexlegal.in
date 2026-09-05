@@ -88,8 +88,8 @@ export default function RegisterSessionsPage() {
       <section className="register-content-panel" aria-labelledby="session-title">
         <div className="register-content">
           <h1 id="session-title">30 Minutes Covering 30 Days - IT, GST & Litigations</h1>
-          <p className="register-author">By CA Shikhar Garg</p>
-          <img className="register-session-image" src="/assets/session-discussion-banner.jpg" alt="Monthly discussion session for practising CAs" />
+          <p className="register-author">By Adv. (CA) Shikhar Garg</p>
+          <img className="register-session-image" src="/assets/session-discussion-banner.png" alt="Monthly discussion session for practising CAs" />
           <div className="register-description">
             <p>A Strict 30 Mins Session - First Thursday of every month at 6 PM.</p>
             <p>A session where the</p>
@@ -98,11 +98,10 @@ export default function RegisterSessionsPage() {
             <p>c) new Guidelines</p>
             <p>in the Income Tax Act, GST and Litigations are discussed.</p>
             <p>Along with some Bonus Tips useful in practical life.</p>
-            <p>A Session exclusively for Practising CAs to align with the INDIA 2047 Goals. As a community Service for the CA Fraternity.</p>
           </div>
         </div>
         <footer className="register-footer">
-          <span>CA Shikhar Garg</span>
+          <span>Adv. (CA) Shikhar Garg</span>
           <a href="/privacy">Privacy</a>
           <a href="/terms">Terms</a>
         </footer>

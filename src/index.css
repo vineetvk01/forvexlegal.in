@@ -862,7 +862,7 @@ h3 {
   width: 100%;
   margin-top: 16px;
   border-radius: 5px;
-  aspect-ratio: 425 / 239;
+  /* aspect-ratio: 425 / 239; */
   object-fit: cover;
 }
 
