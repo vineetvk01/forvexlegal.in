@@ -74,7 +74,7 @@ export default function RegisterSessionsPage() {
       });
 
       setStatus('success');
-      setMessage('Thank you! Your information has been received.');
+      setMessage('Thank you! Will send you the Webinar link 2 hrs before the scheduled time. Join whatsapp group for updates: https://chat.whatsapp.com/BFB4i4KvhqD2SqKRvZxgfF?mode=gi_t');
       setValues({ name: '', email: '', phone: '' });
       setTouched({});
     } catch (error) {
