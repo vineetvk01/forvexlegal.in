@@ -198,7 +198,9 @@ export default function RegisterSessionsPage() {
                 {message}
                 {status === 'success' && redirectSeconds > 0 && (
                   <span style={{ display: 'block', marginTop: '0.5rem' }}>
-                    Redirecting to WhatsApp in {redirectSeconds}s...
+                    Join whatsapp group for discussion and updates. Click the link: <a href="https://chat.whatsapp.com/BFB4i4KvhqD2SqKRvZxgfF?mode=gi_t" target="_blank" rel="noopener noreferrer">Join WhatsApp Group</a>
+                    <br />
+                    Redirecting to WhatsApp Group in {redirectSeconds}s...
                   </span>
                 )}
               </p>
