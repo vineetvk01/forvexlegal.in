@@ -33,6 +33,7 @@ export default function RegisterSessionsPage() {
   const [touched, setTouched] = useState({});
   const [status, setStatus] = useState('idle');
   const [message, setMessage] = useState('');
+  const [redirectSeconds, setRedirectSeconds] = useState(0);
   const errors = useMemo(() => getErrors(values), [values]);
   const isValid = Object.keys(errors).length === 0;
   const isSubmitting = status === 'submitting';
@@ -65,6 +66,7 @@ export default function RegisterSessionsPage() {
 
     setStatus('submitting');
     setMessage('');
+    setRedirectSeconds(0);
 
     try {
       await fetch(GOOGLE_FORM_ACTION_URL, {
@@ -74,9 +76,23 @@ export default function RegisterSessionsPage() {
       });
 
       setStatus('success');
-      setMessage('Thank you! Will send you the Webinar link 2 hrs before the scheduled time. Join whatsapp group for updates: https://chat.whatsapp.com/BFB4i4KvhqD2SqKRvZxgfF?mode=gi_t');
+      setMessage('Thank you! We will send you the webinar link 2 hours before the scheduled time.');
       setValues({ name: '', email: '', phone: '' });
       setTouched({});
+
+      const whatsappUrl = 'https://chat.whatsapp.com/BFB4i4KvhqD2SqKRvZxgfF?mode=gi_t';
+      let remaining = 5;
+      setRedirectSeconds(remaining);
+      const timer = setInterval(() => {
+        remaining -= 1;
+        if (remaining <= 0) {
+          clearInterval(timer);
+          setRedirectSeconds(0);
+          window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+          return;
+        }
+        setRedirectSeconds(remaining);
+      }, 1000);
     } catch (error) {
       setStatus('error');
       setMessage(error.message || 'Submission failed. Please check your details and try again.');
@@ -180,6 +196,11 @@ export default function RegisterSessionsPage() {
               <p className={`register-message ${status}`}>
                 {status === 'success' && <FiCheckCircle aria-hidden="true" />}
                 {message}
+                {status === 'success' && redirectSeconds > 0 && (
+                  <span style={{ display: 'block', marginTop: '0.5rem' }}>
+                    Redirecting to WhatsApp in {redirectSeconds}s...
+                  </span>
+                )}
               </p>
             )}
           </form>
