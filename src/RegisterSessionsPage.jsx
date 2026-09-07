@@ -193,17 +193,19 @@ export default function RegisterSessionsPage() {
               )}
             </button>
             {message && (
-              <p className={`register-message ${status}`}>
-                {status === 'success' && <FiCheckCircle aria-hidden="true" />}
-                {message}
+              <>
+                <p className={`register-message ${status}`}>
+                  {status === 'success' && <FiCheckCircle aria-hidden="true" />}
+                  {message}
+                </p>
                 {status === 'success' && redirectSeconds > 0 && (
-                  <span style={{ display: 'block', marginTop: '0.5rem' }}>
-                    Join whatsapp group for discussion and updates. Click the link: <a href="https://chat.whatsapp.com/BFB4i4KvhqD2SqKRvZxgfF?mode=gi_t" target="_blank" rel="noopener noreferrer">Join WhatsApp Group</a>
-                    <br />
-                    Redirecting to WhatsApp Group in {redirectSeconds}s...
-                  </span>
+                    <span className={`register-message ${status}`} style={{ display: 'block', marginTop: '0.5rem', fontWeight: 600 }}>
+                      <a href="https://chat.whatsapp.com/BFB4i4KvhqD2SqKRvZxgfF?mode=gi_t" target="_blank" rel="noopener noreferrer">Click to join our whatsapp group for discussion and updates</a>
+                      <br />
+                      Redirecting to WhatsApp Group in {redirectSeconds}s...
+                    </span>
                 )}
-              </p>
+              </>
             )}
           </form>
         </div>
