@@ -104,7 +104,7 @@ export default function RegisterSessionsPage() {
         if (remaining <= 0) {
           clearInterval(timer);
           setRedirectSeconds(0);
-          window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+          window.location.href = whatsappUrl;
           return;
         }
         setRedirectSeconds(remaining);
